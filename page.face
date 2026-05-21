@@ -795,19 +795,36 @@ input:focus {
     attachForm();
   }
 
+  /* ── Update only the Next button disabled state (no re-render) ── */
+  function updateNextBtn(step) {
+    var f = state.form;
+    if (step === 0) {
+      var b = document.getElementById('btn-next-0');
+      if (b) b.disabled = !(f.name.trim().length >= 2 && validEmail(f.email));
+    } else if (step === 1) {
+      var b = document.getElementById('btn-next-1');
+      if (b) b.disabled = !(f.companyName.trim().length >= 2 && !!f.sector);
+    }
+  }
+
   /* ── Event wiring ── */
   function attachForm() {
     var step = state.step;
-    var inputMap = {
-      'f-name':    function (v) { setForm({ name: v }); },
-      'f-email':   function (v) { setForm({ email: v }); },
-      'f-phone':   function (v) { setForm({ phone: v }); },
-      'f-company': function (v) { setForm({ companyName: v }); },
+
+    /* Text inputs — update state silently, no re-render */
+    var inputKeys = {
+      'f-name':    'name',
+      'f-email':   'email',
+      'f-phone':   'phone',
+      'f-company': 'companyName',
     };
-    Object.keys(inputMap).forEach(function (id) {
+    Object.keys(inputKeys).forEach(function (id) {
       var el = document.getElementById(id);
       if (!el) return;
-      el.addEventListener('input', function () { inputMap[id](el.value); });
+      el.addEventListener('input', function () {
+        state.form[inputKeys[id]] = el.value;
+        updateNextBtn(step);
+      });
       el.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         var nxt = document.getElementById(
