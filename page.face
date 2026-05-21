@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain Finder · .com.br</title>
+  <link rel="stylesheet" href="stylesheets/style.css" />
+</head>
+<body>
+
+  <!-- Decorative gradient orbs -->
+  <div class="orb orb-red"></div>
+  <div class="orb orb-blue"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">D</div>
+    <span class="logo-title">Domain Finder</span>
+    <span class="logo-badge">.com.br</span>
+  </header>
+
+  <!-- App mount point — rendered entirely by app.js -->
+  <main id="main"></main>
+
+  <script src="js/domain-generator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
