@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <radialGradient id="rg" cx="100%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#E42527" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#07090F" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg" cx="0%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#07090F" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="40"/></filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#07090F"/>
+  <rect width="800" height="500" fill="url(#rg)"/>
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Header bar -->
+  <rect width="800" height="56" fill="#07090F"/>
+  <rect y="55" width="800" height="1" fill="rgba(255,255,255,0.06)"/>
+  <!-- Logo -->
+  <rect x="24" y="10" width="36" height="36" rx="10" fill="#E42527"/>
+  <text x="42" y="34" font-family="sans-serif" font-weight="900" font-size="18" fill="white" text-anchor="middle">D</text>
+  <!-- Title -->
+  <text x="70" y="34" font-family="sans-serif" font-weight="600" font-size="15" fill="white">Domain Finder</text>
+  <!-- Badge -->
+  <rect x="182" y="19" width="58" height="20" rx="10" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="211" y="33" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" text-anchor="middle">.com.br</text>
+
+  <!-- Card -->
+  <rect x="200" y="84" width="400" height="390" rx="24" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Stepper dots -->
+  <circle cx="290" cy="122" r="13" fill="#E42527"/>
+  <text x="290" y="127" font-family="sans-serif" font-size="11" font-weight="700" fill="white" text-anchor="middle">✓</text>
+  <rect x="303" y="121" width="30" height="1" fill="#E42527"/>
+  <circle cx="346" cy="122" r="13" fill="rgba(228,37,39,0.12)" stroke="#E42527" stroke-width="2"/>
+  <text x="346" y="127" font-family="sans-serif" font-size="11" font-weight="700" fill="#E42527" text-anchor="middle">2</text>
+  <rect x="359" y="121" width="30" height="1" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="402" cy="122" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+  <text x="402" y="127" font-family="sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.25)" text-anchor="middle">3</text>
+  <rect x="415" y="121" width="30" height="1" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="458" cy="122" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+  <text x="458" y="127" font-family="sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.25)" text-anchor="middle">4</text>
+
+  <!-- Eyebrow -->
+  <text x="232" y="168" font-family="sans-serif" font-size="10" font-weight="700" fill="#E42527" letter-spacing="2">ETAPA 2 DE 4</text>
+  <!-- Title -->
+  <text x="232" y="192" font-family="sans-serif" font-size="20" font-weight="700" fill="white">Sobre a empresa</text>
+  <!-- Subtitle -->
+  <text x="232" y="210" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.4)">Nome e setor de atuação.</text>
+
+  <!-- Input field -->
+  <rect x="232" y="228" width="336" height="42" rx="12" fill="rgba(255,255,255,0.05)" stroke="#E42527" stroke-width="1.5"/>
+  <text x="248" y="254" font-family="sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Empresa ABC Digital Ltda</text>
+
+  <!-- Sector grid label -->
+  <text x="232" y="292" font-family="sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.4)" letter-spacing="1">SETOR DE ATUAÇÃO</text>
+
+  <!-- Sector grid -->
+  <rect x="232" y="304" width="100" height="52" rx="12" fill="rgba(228,37,39,0.12)" stroke="#E42527" stroke-width="1.5"/>
+  <text x="282" y="326" font-family="sans-serif" font-size="16" text-anchor="middle">💻</text>
+  <text x="282" y="344" font-family="sans-serif" font-size="10" font-weight="600" fill="#FF6B6B" text-anchor="middle">Tecnologia</text>
+
+  <rect x="342" y="304" width="100" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="392" y="326" font-family="sans-serif" font-size="16" text-anchor="middle">🛍️</text>
+  <text x="392" y="344" font-family="sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.55)" text-anchor="middle">Varejo</text>
+
+  <rect x="452" y="304" width="100" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="502" y="326" font-family="sans-serif" font-size="16" text-anchor="middle">🏥</text>
+  <text x="502" y="344" font-family="sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.55)" text-anchor="middle">Saúde</text>
+
+  <rect x="232" y="364" width="100" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="282" y="386" font-family="sans-serif" font-size="16" text-anchor="middle">🎓</text>
+  <text x="282" y="404" font-family="sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.55)" text-anchor="middle">Educação</text>
+
+  <rect x="342" y="364" width="100" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="392" y="386" font-family="sans-serif" font-size="16" text-anchor="middle">💰</text>
+  <text x="392" y="404" font-family="sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.55)" text-anchor="middle">Financeiro</text>
+
+  <rect x="452" y="364" width="100" height="52" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="502" y="386" font-family="sans-serif" font-size="16" text-anchor="middle">🤝</text>
+  <text x="502" y="404" font-family="sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.55)" text-anchor="middle">Serviços</text>
+
+  <!-- Buttons -->
+  <rect x="232" y="432" width="100" height="38" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="282" y="456" font-family="sans-serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.55)" text-anchor="middle">← Voltar</text>
+
+  <rect x="342" y="432" width="210" height="38" rx="12" fill="#E42527"/>
+  <text x="447" y="456" font-family="sans-serif" font-size="12" font-weight="700" fill="white" text-anchor="middle">Continuar →</text>
+</svg>
