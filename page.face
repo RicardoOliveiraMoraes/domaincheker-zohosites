@@ -4,7 +4,280 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Domain Finder · .com.br</title>
-  <link rel="stylesheet" href="stylesheets/style.css" />
+<style>
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #07090F;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ── Gradient orbs ────────────────────────────────────────── */
+.orb {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; filter: blur(80px); z-index: 0;
+}
+.orb-red  { top:-200px; right:-200px; width:500px; height:500px;
+            background: radial-gradient(circle, rgba(228,37,39,.22), transparent 70%); }
+.orb-blue { bottom:-200px; left:-200px; width:500px; height:500px;
+            background: radial-gradient(circle, rgba(59,130,246,.1), transparent 70%); }
+
+/* ── Header ───────────────────────────────────────────────── */
+header {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.logo {
+  width: 36px; height: 36px; border-radius: 12px;
+  background: #E42527; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 18px; color: #fff;
+  box-shadow: 0 0 18px rgba(228,37,39,.5); flex-shrink: 0;
+}
+.logo-title { font-weight: 600; font-size: 16px; letter-spacing: -.3px; }
+.logo-badge {
+  font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.06); color: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* ── Main layout ──────────────────────────────────────────── */
+main {
+  position: relative; z-index: 10;
+  min-height: calc(100vh - 70px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 16px 60px;
+}
+
+/* ── Glass card ───────────────────────────────────────────── */
+.card {
+  width: 100%; max-width: 460px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 28px; padding: 32px;
+  backdrop-filter: blur(20px);
+  animation: fadeUp .35s ease both;
+}
+
+/* ── Stepper ──────────────────────────────────────────────── */
+.stepper {
+  display: flex; align-items: center;
+  justify-content: center; gap: 0; margin-bottom: 36px;
+}
+.step-item { display: flex; flex-direction: column; align-items: center; }
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; transition: all .3s;
+}
+.step-dot.done   { background: #E42527; border: 2px solid #E42527; color: #fff; }
+.step-dot.active { background: rgba(228,37,39,.12); border: 2px solid #E42527; color: #E42527; }
+.step-dot.idle   { background: rgba(255,255,255,.04); border: 2px solid rgba(255,255,255,.1); color: rgba(255,255,255,.25); }
+.step-label { font-size: 10px; font-weight: 600; margin-top: 6px; transition: color .3s; }
+.step-line {
+  flex: 1; max-width: 44px; height: 1px; margin: 0 4px; margin-bottom: 22px;
+  transition: background .4s;
+}
+.step-line.done { background: #E42527; }
+.step-line.idle { background: rgba(255,255,255,.1); }
+
+/* ── Step header ──────────────────────────────────────────── */
+.step-eyebrow {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: #E42527; margin-bottom: 8px;
+}
+.step-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.step-sub   { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 28px; }
+
+/* ── Form fields ──────────────────────────────────────────── */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: rgba(255,255,255,.4); margin-bottom: 8px;
+}
+.field label span { text-transform: none; letter-spacing: 0; font-weight: 400; color: rgba(255,255,255,.2); }
+input[type="text"], input[type="email"], input[type="tel"] {
+  width: 100%; background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+  padding: 13px 16px; color: #fff; font-size: 14px;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+  font-family: inherit;
+}
+input::placeholder { color: rgba(255,255,255,.22); }
+input:focus {
+  border-color: #E42527;
+  box-shadow: 0 0 0 3px rgba(228,37,39,.14);
+}
+
+/* ── Grid selectors ───────────────────────────────────────── */
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+.sel-card {
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; cursor: pointer; transition: all .15s;
+}
+.sel-card:hover { border-color: rgba(228,37,39,.4); background: rgba(228,37,39,.05); }
+.sel-card.active {
+  border-color: #E42527; background: rgba(228,37,39,.12);
+  box-shadow: 0 0 14px rgba(228,37,39,.2);
+}
+.sel-card-sm { padding: 10px 6px; text-align: center; }
+.sel-card-sm .icon { font-size: 18px; display: block; margin-bottom: 4px; }
+.sel-card-sm .lbl  { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.55); }
+.sel-card-sm.active .lbl { color: #FF6B6B; }
+.sel-card-lg { padding: 16px; }
+.sel-card-lg .icon { font-size: 22px; margin-bottom: 8px; display: block; }
+.sel-card-lg .lbl  { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.8); margin-bottom: 4px; }
+.sel-card-lg .desc { font-size: 11px; color: rgba(255,255,255,.3); line-height: 1.5; }
+.sel-card-lg.active .lbl { color: #FF6B6B; }
+.sel-card-md { padding: 14px; }
+.sel-card-md .lbl  { font-size: 13px; font-weight: 700; margin-bottom: 3px; color: rgba(255,255,255,.8); }
+.sel-card-md .desc { font-size: 11px; color: rgba(255,255,255,.3); }
+.sel-card-md.active .lbl { color: #FF6B6B; }
+
+/* ── Keyword tags ─────────────────────────────────────────── */
+.kw-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.kw-row input { flex: 1; }
+.kw-row button {
+  flex-shrink: 0; width: 44px; border: none; border-radius: 14px;
+  background: #E42527; color: #fff; font-size: 20px; font-weight: 700;
+  cursor: pointer; transition: opacity .2s;
+}
+.kw-row button:disabled { opacity: .3; cursor: not-allowed; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; min-height: 4px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: rgba(228,37,39,.15); border: 1px solid rgba(228,37,39,.3); color: #FF6B6B;
+}
+.tag button {
+  border: none; background: none; color: inherit; cursor: pointer;
+  font-size: 14px; line-height: 1; opacity: .6; padding: 0;
+}
+.tag button:hover { opacity: 1; }
+
+/* ── Summary box ──────────────────────────────────────────── */
+.summary-box {
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 20px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+}
+.summary-box p {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: rgba(255,255,255,.3); margin-bottom: 10px;
+}
+.summary-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  font-size: 11px; padding: 4px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.07); color: rgba(255,255,255,.55);
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-row { display: flex; gap: 10px; margin-top: 28px; }
+.btn {
+  border: none; border-radius: 14px; padding: 14px 20px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: all .2s; font-family: inherit;
+}
+.btn-back {
+  flex: 1; background: rgba(255,255,255,.06); color: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.btn-back:hover { background: rgba(255,255,255,.1); }
+.btn-next { flex: 2; background: #E42527; color: #fff; box-shadow: 0 0 24px rgba(228,37,39,.35); }
+.btn-next:hover { opacity: .9; }
+.btn-next:disabled { opacity: .3; cursor: not-allowed; box-shadow: none; }
+.btn-full {
+  width: 100%; margin-top: 28px; background: #E42527; color: #fff;
+  box-shadow: 0 0 28px rgba(228,37,39,.4);
+}
+.btn-full:hover { opacity: .9; }
+.btn-full:disabled { opacity: .3; cursor: not-allowed; box-shadow: none; }
+
+/* ── Results ──────────────────────────────────────────────── */
+.results-wrap { width: 100%; max-width: 520px; animation: fadeUp .35s ease both; }
+.results-header {
+  display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px;
+}
+.results-header h2 { font-size: 20px; font-weight: 700; }
+.results-header p  { font-size: 13px; color: rgba(255,255,255,.4); margin-top: 4px; }
+.btn-new {
+  flex-shrink: 0; border: 1px solid rgba(255,255,255,.08); border-radius: 12px;
+  padding: 8px 14px; background: rgba(255,255,255,.05); color: rgba(255,255,255,.5);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; font-family: inherit;
+}
+.btn-new:hover { background: rgba(255,255,255,.1); }
+.progress-bar {
+  height: 3px; border-radius: 999px; background: rgba(255,255,255,.08);
+  overflow: hidden; margin-bottom: 20px;
+}
+.progress-fill {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg,#E42527,#FF6B6B); transition: width .3s;
+}
+.saved-notice {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  padding: 10px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+  background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2); color: #4ADE80;
+}
+.filter-tabs {
+  display: flex; gap: 4px; padding: 4px; border-radius: 16px; margin-bottom: 14px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+}
+.filter-tab {
+  flex: 1; padding: 7px 4px; border: none; border-radius: 12px;
+  font-size: 11px; font-weight: 700; cursor: pointer; transition: all .15s;
+  background: transparent; color: rgba(255,255,255,.3); font-family: inherit;
+}
+.filter-tab.active { background: rgba(255,255,255,.08); color: #fff; }
+
+/* ── Domain cards ─────────────────────────────────────────── */
+#domain-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.d-card {
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 14px; padding: 13px 16px; transition: all .2s;
+}
+.d-card.checking {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+  animation: blink 1.4s ease-in-out infinite;
+}
+.d-card.available { background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.25); }
+.d-card.taken     { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); }
+.d-left { display: flex; align-items: center; gap: 10px; }
+.d-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.d-dot.checking  { background: rgba(255,255,255,.15); }
+.d-dot.available { background: #22C55E; }
+.d-dot.taken     { background: rgba(255,255,255,.2); }
+.d-name { font-family: 'SF Mono','Fira Code','Consolas',monospace; font-size: 13px; }
+.d-name.checking  { color: rgba(255,255,255,.2); }
+.d-name.available { color: #fff; }
+.d-name.taken     { color: rgba(255,255,255,.35); }
+.d-right { display: flex; align-items: center; gap: 8px; }
+.badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.badge.checking  { background: rgba(255,255,255,.06); color: rgba(255,255,255,.2); }
+.badge.available { background: rgba(34,197,94,.15); color: #4ADE80; }
+.badge.taken     { background: rgba(255,255,255,.06); color: rgba(255,255,255,.3); }
+.register-btn {
+  background: #E42527; color: #fff; border: none; border-radius: 10px;
+  padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  box-shadow: 0 0 10px rgba(228,37,39,.4); font-family: inherit;
+}
+.register-btn:hover { opacity: .85; }
+.rdap-note { text-align: center; font-size: 11px; color: rgba(255,255,255,.18); margin-top: 20px; }
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes blink {
+  0%,100% { opacity:1 } 50% { opacity:.45 }
+}
+</style>
 </head>
 <body>
 
@@ -19,10 +292,611 @@
     <span class="logo-badge">.com.br</span>
   </header>
 
-  <!-- App mount point — rendered entirely by app.js -->
+  <!-- App mount point -->
   <main id="main"></main>
 
-  <script src="js/domain-generator.js"></script>
-  <script src="js/app.js"></script>
+<script>
+/* ── Domain Generator ──────────────────────────────────────── */
+(function (global) {
+
+  var BIZ_SUFFIXES = [
+    'ltda','me','sa','eireli','ei','ss','epp','sas','grupo','group',
+    'sociedade','comercio','comercial','industria','industrial',
+  ];
+
+  var SECTOR_TERMS = {
+    tech:         ['tech','digital','sistemas','dev','software','cloud','ai'],
+    retail:       ['loja','store','shop','vendas','compras'],
+    health:       ['saude','health','med','clinica','vida','bem'],
+    education:    ['edu','cursos','learn','escola','academy'],
+    finance:      ['financeiro','fin','capital','invest','contabil'],
+    services:     ['solucoes','pro','expert','hub','connect'],
+    food:         ['food','chef','sabor','gourmet','nutri'],
+    construction: ['obras','engenharia','imoveis','construtora'],
+    other:        ['brasil','br','online','web','plus'],
+  };
+
+  var STYLE_PREFIXES = {
+    creative: ['get','my','go','be','try'],
+  };
+
+  var STYLE_SUFFIXES = {
+    descriptive: ['digital','online','brasil','web'],
+    location:    ['sp','rj','br','brasil','mg'],
+    creative:    ['hub','lab','app','link','hq'],
+  };
+
+  function slugify(text) {
+    return String(text)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+  }
+
+  function generateDomains(form) {
+    var companyName = form.companyName || '';
+    var sector      = form.sector      || 'other';
+    var keywords    = form.keywords    || [];
+    var audience    = form.audience    || 'b2c';
+    var style       = form.style       || 'descriptive';
+
+    if (!companyName.trim()) return [];
+
+    var words = slugify(companyName).split('-').filter(function (w) {
+      return w.length > 0 && BIZ_SUFFIXES.indexOf(w) === -1;
+    });
+    if (!words.length) return [];
+
+    var base   = words.join('');
+    var hyphen = words.length > 1 ? words.join('-') : null;
+    var abbrev = words.map(function (w) { return w[0]; }).join('');
+
+    var kwSlugs = keywords
+      .map(function (k) { return slugify(k).replace(/-/g, ''); })
+      .filter(function (k) { return k.length >= 2; });
+
+    var sts = SECTOR_TERMS[sector] || SECTOR_TERMS.other;
+    var pfx = STYLE_PREFIXES[style] || [];
+    var sfx = STYLE_SUFFIXES[style] || [];
+
+    var seen = {};
+    var list = [];
+
+    function add(d) {
+      if (!seen[d] && d.length >= 2 && d.length <= 63) { seen[d] = 1; list.push(d); }
+    }
+
+    add(base);
+    if (hyphen) add(hyphen);
+
+    if (style === 'short' && abbrev.length >= 2) {
+      add(abbrev);
+      if (words.length > 1) add(words[0]);
+    }
+
+    sts.slice(0, 4).forEach(function (t) {
+      add(base + t);
+      if (style !== 'short') add(t + base);
+    });
+
+    kwSlugs.forEach(function (k) {
+      add(base + k);
+      add(k + base);
+      if (words.length > 1) add(words[0] + k);
+    });
+
+    pfx.forEach(function (p) { if (base.indexOf(p) !== 0) add(p + base); });
+    sfx.forEach(function (s) { if (base.slice(-s.length) !== s) add(base + s); });
+
+    if (audience === 'b2b') { add(base + 'b2b'); add(base + 'empresas'); }
+    if (audience === 'b2c') add(base + 'online');
+
+    return list.slice(0, 20).map(function (d) { return d + '.com.br'; });
+  }
+
+  global.generateDomains = generateDomains;
+
+})(window);
+</script>
+
+<script>
+/* ── Domain Finder — Main App ────────────────────────────────── */
+(function () {
+  'use strict';
+
+  var CATALYST_LEADS_URL =
+    'https://newppp-766202007.development.catalystserverless.com/server/leads_api';
+
+  var RDAP_BASE = 'https://rdap.registro.br';
+  var DELAY_MS  = 300;
+
+  var SECTORS = [
+    { v:'tech',         l:'Tecnologia',  i:'💻' },
+    { v:'retail',       l:'Varejo',       i:'🛍️' },
+    { v:'health',       l:'Saúde',        i:'🏥' },
+    { v:'education',    l:'Educação',     i:'🎓' },
+    { v:'finance',      l:'Financeiro',   i:'💰' },
+    { v:'services',     l:'Serviços',     i:'🤝' },
+    { v:'food',         l:'Alimentação',  i:'🍽️' },
+    { v:'construction', l:'Construção',   i:'🏗️' },
+    { v:'other',        l:'Outro',        i:'📦' },
+  ];
+
+  var AUDIENCES = [
+    { v:'b2c',  l:'B2C',   d:'Pessoas físicas' },
+    { v:'b2b',  l:'B2B',   d:'Empresas' },
+    { v:'both', l:'Ambos', d:'Todos os públicos' },
+  ];
+
+  var STYLES = [
+    { v:'descriptive', l:'Descritivo',  d:'Nome completo e variações', i:'📝' },
+    { v:'short',       l:'Curto',        d:'Siglas e versões compactas', i:'⚡' },
+    { v:'creative',    l:'Criativo',     d:'Prefixos modernos (go, my…)', i:'✨' },
+    { v:'location',    l:'Localização',  d:'Adiciona SP, RJ, BR…', i:'📍' },
+  ];
+
+  var STEP_LABELS = ['Contato','Empresa','Negócio','Estilo'];
+
+  var state = {
+    step: 0,
+    form: {
+      name:'', email:'', phone:'',
+      companyName:'', sector:'',
+      keywords:[], audience:'b2c', style:'descriptive',
+    },
+    kwInput: '',
+    results: [],
+    status: 'idle',
+    filter: 'all',
+    leadSaved: false,
+  };
+
+  var searchAborted = false;
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function validEmail(e) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  }
+
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  function setForm(patch) {
+    Object.assign(state.form, patch);
+    render();
+  }
+
+  /* ── RDAP ── */
+  function checkDomain(domain) {
+    return fetch(RDAP_BASE + '/domain/' + domain, {
+      headers: { Accept: 'application/rdap+json' }
+    }).then(function (res) {
+      if (res.status === 404) return { domain: domain, status: 'available' };
+      if (res.ok)             return { domain: domain, status: 'taken' };
+      return { domain: domain, status: 'error' };
+    }).catch(function () {
+      return { domain: domain, status: 'error' };
+    });
+  }
+
+  /* ── Lead save ── */
+  function saveLead() {
+    var f = state.form;
+    fetch(CATALYST_LEADS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: f.name, email: f.email, phone: f.phone,
+        company_name: f.companyName, sector: f.sector,
+        keywords: f.keywords, audience: f.audience,
+        domain_style: f.style,
+      }),
+    }).then(function () {
+      state.leadSaved = true;
+      var notice = document.getElementById('saved-notice');
+      if (notice) notice.style.display = 'flex';
+    }).catch(function () {});
+  }
+
+  /* ── Search ── */
+  function handleSearch() {
+    searchAborted = false;
+    var domains = generateDomains(state.form);
+    state.results = domains.map(function (d) { return { domain: d, status: 'checking' }; });
+    state.status  = 'loading';
+    state.step    = 4;
+    state.filter  = 'all';
+    render();
+    saveLead();
+    runChecks(0);
+  }
+
+  function runChecks(i) {
+    if (searchAborted || i >= state.results.length) {
+      if (!searchAborted) {
+        state.status = 'done';
+        var pb = document.getElementById('progress-bar');
+        if (pb) pb.style.display = 'none';
+        showFilterTabs();
+        updateSubtitle();
+      }
+      return;
+    }
+    checkDomain(state.results[i].domain).then(function (result) {
+      state.results[i] = result;
+      patchCard(result);
+      updateProgressBar();
+      return sleep(DELAY_MS);
+    }).then(function () { runChecks(i + 1); });
+  }
+
+  function patchCard(result) {
+    var id = 'dc-' + result.domain.replace(/\./g, '_');
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'd-card ' + (result.status === 'available' ? 'available' : 'taken');
+    el.style.animation = 'none';
+    el.innerHTML = domainCardInner(result);
+  }
+
+  function updateProgressBar() {
+    var fill = document.getElementById('progress-fill');
+    if (!fill) return;
+    var done = state.results.filter(function (r) { return r.status !== 'checking'; }).length;
+    fill.style.width = (done / state.results.length * 100) + '%';
+  }
+
+  function updateSubtitle() {
+    var el = document.getElementById('result-sub');
+    if (!el) return;
+    var av = state.results.filter(function (r) { return r.status === 'available'; }).length;
+    el.textContent = state.results.length + ' sugestões · ' + av +
+      ' disponíve' + (av === 1 ? 'l' : 'is');
+  }
+
+  function showFilterTabs() {
+    var ft = document.getElementById('filter-tabs');
+    if (!ft) return;
+    ft.style.display = 'flex';
+    ft.innerHTML = filterTabsHTML();
+    attachFilterTabs();
+  }
+
+  function filterTabsHTML() {
+    var av = state.results.filter(function (r) { return r.status === 'available'; }).length;
+    var tk = state.results.filter(function (r) { return r.status === 'taken'; }).length;
+    return [
+      { k:'all',        l:'Todos (' + state.results.length + ')' },
+      { k:'available',  l:'Disponíveis (' + av + ')' },
+      { k:'registered', l:'Registrados (' + tk + ')' },
+    ].map(function (t) {
+      return '<button class="filter-tab' + (state.filter === t.k ? ' active' : '') +
+             '" data-f="' + t.k + '">' + t.l + '</button>';
+    }).join('');
+  }
+
+  function rebuildDomainList() {
+    var list = document.getElementById('domain-list');
+    if (!list) return;
+    var items = state.filter === 'available'
+      ? state.results.filter(function (r) { return r.status === 'available'; })
+      : state.filter === 'registered'
+      ? state.results.filter(function (r) { return r.status === 'taken'; })
+      : state.results;
+    list.innerHTML = items.map(domainCardHTML).join('');
+  }
+
+  /* ── HTML builders ── */
+  function stepper() {
+    var s = Math.min(state.step, 4);
+    var html = '<div class="stepper">';
+    STEP_LABELS.forEach(function (label, i) {
+      var dotCls = i < s ? 'done' : i === s ? 'active' : 'idle';
+      var lblClr = i <= s ? 'rgba(255,255,255,.65)' : 'rgba(255,255,255,.22)';
+      html += '<div class="step-item">' +
+        '<div class="step-dot ' + dotCls + '">' + (i < s ? '&#10003;' : i + 1) + '</div>' +
+        '<span class="step-label" style="color:' + lblClr + '">' + label + '</span>' +
+        '</div>';
+      if (i < STEP_LABELS.length - 1)
+        html += '<div class="step-line ' + (i < s ? 'done' : 'idle') + '"></div>';
+    });
+    return html + '</div>';
+  }
+
+  function fieldHTML(id, label, type, value, placeholder, optional) {
+    return '<div class="field">' +
+      '<label for="' + id + '">' + label +
+      (optional ? ' <span>(opcional)</span>' : '') + '</label>' +
+      '<input id="' + id + '" type="' + type + '" value="' + esc(value) +
+      '" placeholder="' + esc(placeholder) + '" autocomplete="off" /></div>';
+  }
+
+  function sectorGrid() {
+    return '<div class="grid-3">' +
+      SECTORS.map(function (s) {
+        return '<div class="sel-card sel-card-sm' +
+          (state.form.sector === s.v ? ' active' : '') +
+          '" data-type="sector" data-v="' + s.v + '">' +
+          '<span class="icon">' + s.i + '</span>' +
+          '<span class="lbl">' + s.l + '</span></div>';
+      }).join('') + '</div>';
+  }
+
+  function audienceGrid() {
+    return '<div class="grid-3">' +
+      AUDIENCES.map(function (a) {
+        return '<div class="sel-card sel-card-md' +
+          (state.form.audience === a.v ? ' active' : '') +
+          '" data-type="audience" data-v="' + a.v + '">' +
+          '<div class="lbl">' + a.l + '</div>' +
+          '<div class="desc">' + a.d + '</div></div>';
+      }).join('') + '</div>';
+  }
+
+  function styleGrid() {
+    return '<div class="grid-2">' +
+      STYLES.map(function (s) {
+        return '<div class="sel-card sel-card-lg' +
+          (state.form.style === s.v ? ' active' : '') +
+          '" data-type="style" data-v="' + s.v + '">' +
+          '<span class="icon">' + s.i + '</span>' +
+          '<div class="lbl">' + s.l + '</div>' +
+          '<div class="desc">' + s.d + '</div></div>';
+      }).join('') + '</div>';
+  }
+
+  function kwSection() {
+    return '<div class="field">' +
+      '<label>Palavras-chave <span>(até 5 — Enter para adicionar)</span></label>' +
+      '<div class="kw-row">' +
+      '<input id="kw-input" type="text" value="' + esc(state.kwInput) +
+      '" placeholder="inovação, automação…" />' +
+      '<button id="kw-add"' + (state.form.keywords.length >= 5 ? ' disabled' : '') + '>+</button>' +
+      '</div><div class="tag-list">' +
+      state.form.keywords.map(function (k) {
+        return '<span class="tag">' + esc(k) +
+          '<button type="button" data-kw="' + esc(k) + '">&#215;</button></span>';
+      }).join('') + '</div></div>';
+  }
+
+  function summaryBox() {
+    var sectorLabel   = (SECTORS.find(function (s) { return s.v === state.form.sector; }) || {}).l;
+    var audienceLabel = (AUDIENCES.find(function (a) { return a.v === state.form.audience; }) || {}).l;
+    var pills = [state.form.name, state.form.email, state.form.companyName, sectorLabel]
+      .concat(state.form.keywords).concat([audienceLabel])
+      .filter(Boolean)
+      .map(function (p) { return '<span class="pill">' + esc(p) + '</span>'; })
+      .join('');
+    return '<div class="summary-box"><p>Resumo da busca</p>' +
+      '<div class="summary-pills">' + pills + '</div></div>';
+  }
+
+  function domainCardInner(r) {
+    var isAvail = r.status === 'available';
+    var label   = isAvail ? 'Disponível' : r.status === 'taken' ? 'Registrado' : '…';
+    return '<div class="d-left">' +
+      '<span class="d-dot ' + r.status + '"></span>' +
+      '<span class="d-name ' + r.status + '">' + esc(r.domain) + '</span>' +
+      '</div><div class="d-right">' +
+      '<span class="badge ' + r.status + '">' + label + '</span>' +
+      (isAvail ? '<a class="register-btn" href="https://registro.br/busca-dominio/?fqdn=' +
+        esc(r.domain) + '" target="_blank" rel="noopener">Registrar</a>' : '') +
+      '</div>';
+  }
+
+  function domainCardHTML(r) {
+    return '<li class="d-card ' + (r.status === 'available' ? 'available' : r.status === 'taken' ? 'taken' : 'checking') +
+      '" id="dc-' + r.domain.replace(/\./g, '_') + '">' + domainCardInner(r) + '</li>';
+  }
+
+  /* ── Render ── */
+  function render() {
+    var el = document.getElementById('main');
+    if (!el) return;
+    var f = state.form;
+
+    if (state.step === 4) {
+      var av = state.results.filter(function (r) { return r.status === 'available'; }).length;
+      el.innerHTML =
+        '<div class="results-wrap">' +
+          '<div class="results-header"><div>' +
+            '<h2>Sugestões de domínio</h2>' +
+            '<p id="result-sub">' +
+              (state.status === 'loading' ? 'Verificando domínios…'
+                : state.results.length + ' sugestões · ' + av + ' disponíve' + (av===1?'l':'is')) +
+            '</p></div>' +
+            '<button class="btn-new" id="btn-new">&#8592; Nova busca</button>' +
+          '</div>' +
+          '<div id="saved-notice" class="saved-notice" style="display:' + (state.leadSaved?'flex':'none') + '">' +
+            '&#10003; Seus dados foram salvos — entraremos em contato.' +
+          '</div>' +
+          '<div class="progress-bar" id="progress-bar"' + (state.status==='done'?' style="display:none"':'') + '>' +
+            '<div class="progress-fill" id="progress-fill" style="width:0%"></div>' +
+          '</div>' +
+          '<div class="filter-tabs" id="filter-tabs" style="' + (state.status!=='done'?'display:none':'') + '">' +
+            filterTabsHTML() +
+          '</div>' +
+          '<ul id="domain-list">' + state.results.map(domainCardHTML).join('') + '</ul>' +
+          '<p class="rdap-note">Consulta via RDAP · Registro.br</p>' +
+        '</div>';
+      attachResults();
+      return;
+    }
+
+    var inner = '';
+
+    if (state.step === 0) {
+      var ok0 = f.name.trim().length >= 2 && validEmail(f.email);
+      inner =
+        '<div class="card">' + stepper() +
+        '<p class="step-eyebrow">Etapa 1 de 4</p>' +
+        '<h2 class="step-title">Quem está buscando?</h2>' +
+        '<p class="step-sub">Vamos personalizar as sugestões para você.</p>' +
+        fieldHTML('f-name',  'Nome completo', 'text',  f.name,  'Seu nome', false) +
+        fieldHTML('f-email', 'E-mail',        'email', f.email, 'voce@empresa.com.br', false) +
+        fieldHTML('f-phone', 'Telefone',      'tel',   f.phone, '(11) 99999-9999', true) +
+        '<button class="btn btn-full" id="btn-next-0"' + (ok0 ? '' : ' disabled') + '>Continuar &#8594;</button>' +
+        '</div>';
+    }
+
+    if (state.step === 1) {
+      var ok1 = f.companyName.trim().length >= 2 && !!f.sector;
+      inner =
+        '<div class="card">' + stepper() +
+        '<p class="step-eyebrow">Etapa 2 de 4</p>' +
+        '<h2 class="step-title">Sobre a empresa</h2>' +
+        '<p class="step-sub">Nome e setor de atuação.</p>' +
+        fieldHTML('f-company','Nome da empresa ou marca','text',f.companyName,'Ex: Empresa ABC, Studio Digital…',false) +
+        '<div class="field"><label>Setor de atuação</label>' + sectorGrid() + '</div>' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-back" id="btn-back">&#8592; Voltar</button>' +
+          '<button class="btn btn-next" id="btn-next-1"' + (ok1 ? '' : ' disabled') + '>Continuar &#8594;</button>' +
+        '</div></div>';
+    }
+
+    if (state.step === 2) {
+      inner =
+        '<div class="card">' + stepper() +
+        '<p class="step-eyebrow">Etapa 3 de 4</p>' +
+        '<h2 class="step-title">Detalhes do negócio</h2>' +
+        '<p class="step-sub">Quanto mais contexto, melhores as sugestões.</p>' +
+        kwSection() +
+        '<div class="field" style="margin-top:20px"><label>Público-alvo</label>' + audienceGrid() + '</div>' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-back" id="btn-back">&#8592; Voltar</button>' +
+          '<button class="btn btn-next" id="btn-next-2">Continuar &#8594;</button>' +
+        '</div></div>';
+    }
+
+    if (state.step === 3) {
+      inner =
+        '<div class="card">' + stepper() +
+        '<p class="step-eyebrow">Etapa 4 de 4</p>' +
+        '<h2 class="step-title">Estilo do domínio</h2>' +
+        '<p class="step-sub">Qual formato combina com a sua marca?</p>' +
+        '<div class="field">' + styleGrid() + '</div>' +
+        summaryBox() +
+        '<div class="btn-row">' +
+          '<button class="btn btn-back" id="btn-back">&#8592; Voltar</button>' +
+          '<button class="btn btn-next" id="btn-search">&#128269; Buscar domínios</button>' +
+        '</div></div>';
+    }
+
+    el.innerHTML = inner;
+    attachForm();
+  }
+
+  /* ── Event wiring ── */
+  function attachForm() {
+    var step = state.step;
+    var inputMap = {
+      'f-name':    function (v) { setForm({ name: v }); },
+      'f-email':   function (v) { setForm({ email: v }); },
+      'f-phone':   function (v) { setForm({ phone: v }); },
+      'f-company': function (v) { setForm({ companyName: v }); },
+    };
+    Object.keys(inputMap).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', function () { inputMap[id](el.value); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter') return;
+        var nxt = document.getElementById(
+          step === 0 ? 'btn-next-0' : step === 1 ? 'btn-next-1' : null
+        );
+        if (nxt && !nxt.disabled) nxt.click();
+      });
+    });
+    var first = document.getElementById('f-name') || document.getElementById('f-company');
+    if (first) setTimeout(function () { first.focus(); }, 50);
+
+    document.querySelectorAll('[data-type]').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var t = card.dataset.type, v = card.dataset.v;
+        var patch = {};
+        patch[t === 'sector' ? 'sector' : t === 'audience' ? 'audience' : 'style'] = v;
+        setForm(patch);
+      });
+    });
+
+    var kwIn  = document.getElementById('kw-input');
+    var kwAdd = document.getElementById('kw-add');
+    if (kwIn) {
+      kwIn.addEventListener('input', function () { state.kwInput = kwIn.value; });
+      kwIn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addKeyword(); }
+      });
+      setTimeout(function () { kwIn.focus(); }, 50);
+    }
+    if (kwAdd) kwAdd.addEventListener('click', addKeyword);
+
+    document.querySelectorAll('[data-kw]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setForm({ keywords: state.form.keywords.filter(function (k) { return k !== btn.dataset.kw; }) });
+      });
+    });
+
+    var back = document.getElementById('btn-back');
+    if (back) back.addEventListener('click', function () { state.step--; render(); });
+
+    var n0 = document.getElementById('btn-next-0');
+    if (n0) n0.addEventListener('click', function () { state.step = 1; render(); });
+
+    var n1 = document.getElementById('btn-next-1');
+    if (n1) n1.addEventListener('click', function () { state.step = 2; render(); });
+
+    var n2 = document.getElementById('btn-next-2');
+    if (n2) n2.addEventListener('click', function () { state.step = 3; render(); });
+
+    var srch = document.getElementById('btn-search');
+    if (srch) srch.addEventListener('click', handleSearch);
+  }
+
+  function attachResults() {
+    var nb = document.getElementById('btn-new');
+    if (nb) nb.addEventListener('click', function () {
+      searchAborted = true;
+      state.step = 0; state.results = []; state.status = 'idle';
+      state.leadSaved = false; state.filter = 'all';
+      render();
+    });
+    attachFilterTabs();
+  }
+
+  function attachFilterTabs() {
+    document.querySelectorAll('.filter-tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.filter = btn.dataset.f;
+        showFilterTabs();
+        rebuildDomainList();
+      });
+    });
+  }
+
+  function addKeyword() {
+    var kw = state.kwInput.trim();
+    if (kw && state.form.keywords.indexOf(kw) === -1 && state.form.keywords.length < 5) {
+      state.kwInput = '';
+      setForm({ keywords: state.form.keywords.concat([kw]) });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+
+})();
+</script>
 </body>
 </html>
